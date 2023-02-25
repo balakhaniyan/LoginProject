@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "LoginAndSignUp"
+		},
+		{
+			"path": "LoginAndSignUpTest"
+		},
+		{
+			"path": "Interactive"
+		},
+		{
+			"path": "LoginAndSignUpConsole"
+		},
+		{
+			"path": "MyTAX"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"vazir",
+			"wwwroot"
+		]
+	}
+}
