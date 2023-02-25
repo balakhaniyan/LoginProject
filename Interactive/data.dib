@@ -1,0 +1,7 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","aliases":[]},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":".NET","languageName":null,"aliases":[]}]}}
+
+#!csharp
+
+1 < 2 && 2 < 3
