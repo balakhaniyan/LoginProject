@@ -31,12 +31,12 @@ public class Validation
 
     public record class Problem
     {
+        public bool FirstName { get; set; } = false;
+        public bool LastName { get; set; } = false;
         public bool Email { get; set; } = false;
         public bool UserName { get; set; } = false;
         public LoginAndSignUp.Password.PasswordProblem Password { get; set; } = LoginAndSignUp.Password.PasswordProblem.None;
         public bool ConfirmPassword { get; set; } = false;
-        public bool FirstName { get; set; } = false;
-        public bool LastName { get; set; } = false;
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);

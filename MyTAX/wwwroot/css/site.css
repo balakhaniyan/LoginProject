@@ -43,7 +43,6 @@ h1 {
   height: 3.5rem;
   background-color: #edecec;
   border-radius: 0.8rem;
-  padding: 1% 20px;
   position: relative;
   margin: 0 auto 1rem;
 }
@@ -110,19 +109,33 @@ h1 {
   direction: ltr;
 }
 
-.input-holder.valid-input
-{
+.input-holder.valid-input {
   background-color: #edecec;
 }
-.input-holder.invalid-input
-{
+
+.input-holder.invalid-input {
   background-color: rgb(246, 184, 160);
 }
-.input-holder.invalid-input.initial
-{
+
+.input-holder.invalid-input.initial {
   background-color: #edecec;
 }
-input:disabled, input[disabled] {
+
+input:disabled,
+input[disabled] {
   background-color: #ccc !important;
   cursor: not-allowed;
+}
+
+.input-holder .problem_part {
+  visibility: hidden;
+  color: red;
+  position: absolute;
+  top: 1.1rem;
+  left: 5%;
+}
+
+.input-holder .ltr-input + .problem_part
+{
+  left: 90%;
 }

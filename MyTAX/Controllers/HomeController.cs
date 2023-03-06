@@ -58,7 +58,7 @@ public class HomeController : Controller
         }
         if (model.Password is not null)
         {
-            model.Validation.SignUpProblems.Password = Password.CheckPassword(model.Password, _passwordConfig).ToString();
+            // model.Validation.SignUpProblems.Password = Password.CheckPassword(model.Password, _passwordConfig).ToString();
         }
 
         if (model.Password != model.ConfirmPassword)

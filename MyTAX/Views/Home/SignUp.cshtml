@@ -8,26 +8,32 @@
 <form method="post" asp-controller="Home" asp-action="SignUp">
     <div class="input-holder invalid-input initial">
         <input asp-for="FirstName" id="first_name">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>نام</label>
     </div>
     <div class="input-holder invalid-input initial">
         <input asp-for="LastName" id="last_name">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>نام خانوادگی</label>
     </div>
     <div class="input-holder invalid-input initial">
         <input asp-for="UserName" id="user_name" class="ltr-input">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>نام کاربری</label>
     </div>
     <div class="input-holder invalid-input initial">
         <input asp-for="Email" id="email" class="ltr-input">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>رایانامه</label>
     </div>
     <div class="input-holder invalid-input initial">
         <input asp-for="Password" id="password" class="ltr-input" type="password">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>رمز عبور</label>
     </div>
     <div class="input-holder invalid-input initial">
         <input asp-for="ConfirmPassword" id="confirm_password" class="ltr-input" type="password">
+        <span class="problem_part"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
         <label>تکرار رمز عبور</label>
     </div>
     <div class="form-buttons-holder">
