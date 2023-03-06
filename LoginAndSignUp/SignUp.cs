@@ -1,11 +1,10 @@
-﻿using System.Text.RegularExpressions;
-using System.Net;
-using System.Net.Mail;
+﻿using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 namespace LoginAndSignUp;
 public class Password
 {
 
-    const string SYMBOLS = "!@#$%^&*()_+{}|:<>?";
+    public const string SYMBOLS = @"!@#$%^&*()_+{}|:<>?";
 
     public record class Config
     {
@@ -13,7 +12,12 @@ public class Password
         public bool RequiredDigit { get; init; } = false;
         public bool RequiredLowercase { get; init; } = false;
         public bool RequiredUppercase { get; init; } = false;
-        public bool RequiredSpecial { get; init; } = false;
+        public bool RequiredSymbol { get; init; } = false;
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 
     [Flags]
@@ -24,7 +28,7 @@ public class Password
         Digit = 2,
         Lowercase = 4,
         Uppercase = 8,
-        Special = 16
+        Symbol = 16
     }
 
     public static Config DefaultConfig { get; } = new();
@@ -83,7 +87,7 @@ public class Password
         {
             config = new Config();
         }
-        if (config.RequiredSpecial)
+        if (config.RequiredSymbol)
         {
             return password.Any(c => SYMBOLS.Contains(c));
         }
@@ -121,7 +125,7 @@ public class Password
 
         if (!CheckSymbol(password, config))
         {
-            problems |= PasswordProblem.Special;
+            problems |= PasswordProblem.Symbol;
         }
 
         return problems;
@@ -136,7 +140,7 @@ public class Password
 
 public class Email
 {
-    const string EMAIL_REGEX_STRING = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+    public const string EMAIL_REGEX_STRING = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
     static readonly Regex REGEX = new(EMAIL_REGEX_STRING);
 
     public static bool IsValid(string email)
@@ -154,33 +158,7 @@ public class Email
 
     public static void SendVerificationCode(string email)
     {
-        
+
     }
-}
-
-public class Username
-{
-    public static string GenerateUUID()
-    {
-        return Guid.NewGuid().ToString();
-    }
-}
-
-public record class User
-{
-    public string? UserID { get; set; }
-    public string? Email { get; set; }
-    public string? Username { get; set; }
-    public string? Password { get; set; }
-}
-
-public record class SignUp
-{
-    public string? Email { get; set; }
-    public string? Username { get; set; }
-    public string? Password { get; set; }
-    public string? ConfirmPassword { get; set; }
-    public string? FirstNameAndLastName { get; set; }
-    public string? VerificationCode { get; set; }
 }
 

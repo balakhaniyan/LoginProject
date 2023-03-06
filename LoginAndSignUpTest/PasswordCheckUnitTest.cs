@@ -10,7 +10,7 @@ public class PasswordUnitTest
         RequiredDigit = true,
         RequiredLowercase = true,
         RequiredUppercase = true,
-        RequiredSpecial = true
+        RequiredSymbol = true
     };
 
     [Fact]
@@ -68,14 +68,14 @@ public class PasswordUnitTest
     }
 
     [Fact]
-    public void RequiredSpecial1()
+    public void RequiredSymbol1()
     {
         var password = "1abcdefg!";
         Assert.True(Password.CheckSymbol(password, config));
     }
 
     [Fact]
-    public void RequiredSpecial2()
+    public void RequiredSymbol2()
     {
         var password = "1abcdefg";
         Assert.False(Password.CheckSymbol(password, config));
@@ -93,7 +93,7 @@ public class PasswordUnitTest
     public void RequiredPassword2()
     {
         var password = "1abcdefg";
-        Assert.True(Password.CheckPassword(password, config) == (Password.PasswordProblem.Uppercase | Password.PasswordProblem.Special));
+        Assert.True(Password.CheckPassword(password, config) == (Password.PasswordProblem.Uppercase | Password.PasswordProblem.Symbol));
     }
 
     [Fact]
@@ -106,10 +106,10 @@ public class PasswordUnitTest
 
 
     [Fact]
-    public void RequiredPasswordWithoutSpecial()
+    public void RequiredPasswordWithoutSymbol()
     {
-        var without_special_config = config with { RequiredSpecial = false };
+        var without_symbol_config = config with { RequiredSymbol = false };
         var password = "1abcdefG";
-        Assert.True(Password.CheckPassword(password, without_special_config) == Password.PasswordProblem.None);
+        Assert.True(Password.CheckPassword(password, without_symbol_config) == Password.PasswordProblem.None);
     }
 }

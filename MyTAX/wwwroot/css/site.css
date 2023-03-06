@@ -109,3 +109,20 @@ h1 {
 .ltr-input {
   direction: ltr;
 }
+
+.input-holder.valid-input
+{
+  background-color: #edecec;
+}
+.input-holder.invalid-input
+{
+  background-color: rgb(246, 184, 160);
+}
+.input-holder.invalid-input.initial
+{
+  background-color: #edecec;
+}
+input:disabled, input[disabled] {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
