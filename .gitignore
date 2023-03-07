@@ -409,3 +409,6 @@ FodyWeavers.xsd
 **/wwwroot/lib
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore
+
+
+Migrations/

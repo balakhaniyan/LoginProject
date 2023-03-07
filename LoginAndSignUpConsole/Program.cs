@@ -1,12 +1,11 @@
-﻿using LoginAndSignUp;
+﻿using System.Data.SqlClient;
+using Dapper;
 
-var config = new Password.Config()
+var cs = @"Server=.;Database=MyDataBase;Trusted_Connection=True;";
+
+using (var con = new SqlConnection(cs))
 {
-    MinLength = 8,
-    RequiredDigit = true,
-    RequiredLowercase = true,
-    RequiredUppercase = true,
-    RequiredSpecial = true
-};
-
-Console.WriteLine(config.ToJson());
+    con.Open();
+    var version = con.ExecuteScalar<string>("SELECT COUNT(*) FROM data");
+    Console.WriteLine(version);
+}

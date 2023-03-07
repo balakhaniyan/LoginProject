@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MyTAX.Models;
+using Shared;
 using LoginAndSignUp;
 
 namespace MyTAX.Controllers;
@@ -46,26 +47,43 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SignUp(SignUpViewModel model)
+    public IActionResult SignUp(SignUpViewModel signUpViewModel)
     {
-        if (model is null)
+        if (signUpViewModel is null)
         {
             return NotFound();
         }
-        if (model.Email is null || !Email.IsValid(model.Email))
-        {
-            model.Validation.SignUpProblems.Email = true;
-        }
-        if (model.Password is not null)
-        {
-            // model.Validation.SignUpProblems.Password = Password.CheckPassword(model.Password, _passwordConfig).ToString();
-        }
+        // if (model.Email is null || !Email.IsValid(model.Email))
+        // {
+        //     model.Validation.SignUpProblems.Email = true;
+        // }
+        // if (model.Password is not null)
+        // {
+        //     // model.Validation.SignUpProblems.Password = Password.CheckPassword(model.Password, _passwordConfig).ToString();
+        // }
 
-        if (model.Password != model.ConfirmPassword)
+        // if (model.Password != model.ConfirmPassword)
+        // {
+        //     model.Validation.SignUpProblems.ConfirmPassword = true;
+        // }
+
+
+
+        User user = new()
         {
-            model.Validation.SignUpProblems.ConfirmPassword = true;
+            FirstName = signUpViewModel.FirstName,
+            LastName = signUpViewModel.LastName,
+            UserName = signUpViewModel.UserName,
+            Password = signUpViewModel.Password,
+            Email = signUpViewModel.Email
+        };
+
+        using (var connection = new SqlConnection(DataBase.ConnectionString))
+        {
+            var sql = "insert into Users values (@Id, @FirstName, @LastName, @Username, @Password, @Email)";
+            connection.Execute(sql, param: user);
         }
-        return View(model);
+        return View("Index");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
