@@ -1,7 +1,7 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","aliases":["c#","C#"],"languageName":"C#"},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":".NET","aliases":[],"languageName":null}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":".NET","aliases":[],"languageName":null}]}}
 
 #!csharp
 
-1 < 2 && 2 < 3
+0.1M + 0.2M

@@ -37,7 +37,7 @@
         <label>تکرار رمز عبور</label>
     </div>
     <div class="form-buttons-holder">
-        <input class="submit-input" type="submit" value="ثبت"><input type="reset" value="پاک کردن">
+        <input class="submit-input" type="submit" value="ثبت" disabled><input type="reset" value="پاک کردن">
     </div>
 </form>
 @section Scripts
@@ -114,7 +114,7 @@
         $("#first_name, #last_name, #user_name, #email, #password, #confirm_password").on("focus", function () {
             $(this).parent(".input-holder").removeClass("initial");
         }).on("keyup", function (e) {
-            @* !$(document).find(".invalid-input").length ? $(".submit-input").removeAttr("disabled") : $(".submit-input").attr("disabled", "disabled"); *@
+             !$(document).find(".invalid-input").length ? $(".submit-input").removeAttr("disabled") : $(".submit-input").attr("disabled", "disabled"); 
         });
     </script>
 }

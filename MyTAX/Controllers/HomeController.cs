@@ -67,20 +67,15 @@ public class HomeController : Controller
         //     model.Validation.SignUpProblems.ConfirmPassword = true;
         // }
 
+        User user = (User) signUpViewModel;
 
-
-        User user = new()
-        {
-            FirstName = signUpViewModel.FirstName,
-            LastName = signUpViewModel.LastName,
-            UserName = signUpViewModel.UserName,
-            Password = signUpViewModel.Password,
-            Email = signUpViewModel.Email
-        };
 
         using (var connection = new SqlConnection(DataBase.ConnectionString))
         {
-            var sql = "insert into Users values (@Id, @FirstName, @LastName, @Username, @Password, @Email)";
+            var sql = """
+            insert into Users(Id, FirstName, LastName, Username, Password, Email) 
+            values (@Id, @FirstName, @LastName, @Username, @Password, @Email)
+            """;
             connection.Execute(sql, param: user);
         }
         return View("Index");

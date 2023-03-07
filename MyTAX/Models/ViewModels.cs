@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.ComponentModel.DataAnnotations;
 using LoginAndSignUp;
 
-public class SignUpViewModel
+public record class SignUpViewModel
 {
     public string? Email { get; set; }
 
@@ -21,6 +21,18 @@ public class SignUpViewModel
 
     public Validation Validation { get; set; } = new();
 
+    public static explicit operator User(SignUpViewModel signUpViewModel)
+    {
+        User user = new()
+        {
+            FirstName = signUpViewModel.FirstName,
+            LastName = signUpViewModel.LastName,
+            UserName = signUpViewModel.UserName,
+            Password = LoginAndSignUp.Password.HashPassword(signUpViewModel.Password),
+            Email = signUpViewModel.Email
+        };
+        return user;
+    }
 }
 
 public class Validation
