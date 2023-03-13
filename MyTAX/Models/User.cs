@@ -1,4 +1,5 @@
-global using System.ComponentModel.DataAnnotations;
+[Index(nameof(Email), IsUnique = true)]
+[Index(nameof(UserName), IsUnique = true)]
 public class User
 {
     [Key]

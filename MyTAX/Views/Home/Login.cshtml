@@ -1,18 +1,25 @@
+@model LoginViewModel
 @{
     ViewData["Title"] = "ورود";
 }
 <h1>@ViewData["Title"]</h1>
 
-<form>
+<form method="post" asp-controller="Home" asp-action="Login">
     <div class="input-holder">
-        <input class="ltr-input" />
+        <input class="ltr-input" asp-for="UserName" />
         <label>نام کاربری</label>
     </div>
     <div class="input-holder">
-        <input class="ltr-input" type="password" />
+        <input class="ltr-input" type="password" asp-for="Password" />
         <label>رمز عبور</label>
     </div>
     <div class="form-buttons-holder">
         <input style="width: 100%;" class="submit-input" type="submit" value="ورود" />
     </div>
+    @if (Model.IsNotUser == true)
+    {
+        <div>
+            <p>نام کاربری یا رمز عبور اشتباه است</p>
+        </div>
+    }
 </form>

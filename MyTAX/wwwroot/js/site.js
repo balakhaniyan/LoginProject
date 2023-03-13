@@ -13,18 +13,19 @@
         this.label.style.fontSize = "0.5rem";
     }
     onBlur() {
-        if (this.input.value === "") {
-            this.label.style.top = "0";
-            this.label.style.fontSize = "0.7rem";
-        }
+        // if ($(this.input).val() !== "" || $(this.input).parent(".input-holder").hasClass("invalid-input")) {
+        //     this.label.style.top = "0";
+        //     this.label.style.fontSize = "0.7rem";
+        // }
     }
     onKeyUp() {
-        if (this.input.value === "") {
-            this.label.style.top = "0";
-            this.label.style.fontSize = "0.7rem";
-        } else {
+        if ($(this.input).val() !== "" || $(this.input).parent(".input-holder").hasClass("invalid-input")) {
             this.label.style.top = "-1rem";
             this.label.style.fontSize = "0.5rem";
+        } else {
+            this.label.style.top = "0";
+            this.label.style.fontSize = "0.7rem";
+
         }
     }
 }
@@ -48,15 +49,15 @@ class Password {
     static checkPassword(password, config) {
         let problems = {};
         if (config.RequiredUppercase && !Password.checkUpper(password)) {
-            problems.upper = true;
+            problems.uppercase = true;
         }
         if (config.RequiredLowercase && !Password.checkLower(password)) {
-            problems.lower = true;
+            problems.lowercase = true;
         }
         if (config.RequiredDigit && !Password.checkDigit(password)) {
             problems.digit = true;
         }
-        if (config.RequiredSymbol && !Password.checkSymbol(password)) {
+        if (config.RequiredSymbol !== "" && !Password.checkSymbol(password, config.SpecialChars)) {
             problems.symbol = true;
         }
         if (!Password.checkLength(password, config.MinLength)) {
@@ -68,4 +69,16 @@ class Password {
 
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".input-holder input").forEach(input => new InputLabel(input));
+});
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".input-holder input").each(function () {
+        if ($(this).val() !== "") {
+            $(this).parent().find("label").css({
+                'font-size': '0.5',
+                'top': '-1rem'
+            })
+        }
+    })
 });

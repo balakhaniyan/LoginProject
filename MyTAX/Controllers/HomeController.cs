@@ -1,21 +1,10 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using MyTAX.Models;
+﻿using MyTAX.Models;
 using Shared;
 using LoginAndSignUp;
-
 namespace MyTAX.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly Password.Config _passwordConfig = new()
-    {
-        MinLength = 6,
-        RequiredDigit = true,
-        RequiredLowercase = true,
-        RequiredUppercase = true,
-        RequiredSymbol = true
-    };
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger)
@@ -30,7 +19,40 @@ public class HomeController : Controller
 
     public IActionResult Login()
     {
-        return View();
+        LoginViewModel loginViewModel = new()
+        {
+            IsNotUser = false
+        };
+        return View(loginViewModel);
+    }
+
+    [HttpPost]
+    public IActionResult Login(LoginViewModel loginViewModel)
+    {
+        if (loginViewModel is null)
+        {
+            return NotFound();
+        }
+
+        if (loginViewModel.UserName is null || loginViewModel.Password is null)
+        {
+            return View(loginViewModel);
+        }
+
+        loginViewModel = loginViewModel with { Password = Password.HashPassword(loginViewModel.Password) };
+
+        using (var connection = new SqlConnection(DataBase.ConnectionString))
+        {
+            var sql = "SELECT * FROM Users WHERE UserName = @UserName AND Password = @Password";
+            var result = connection.QueryFirstOrDefault<User>(sql, param: loginViewModel);
+            if (result is null)
+            {
+                loginViewModel = loginViewModel with { IsNotUser = true, Password = null };
+                return View(loginViewModel);
+            }
+        }
+
+        return View("Index", loginViewModel);
     }
 
     public IActionResult SignUp()
@@ -39,46 +61,53 @@ public class HomeController : Controller
         {
             Validation = new()
             {
-                PasswordConfig = _passwordConfig,
+                PasswordConfig = SignUpMethods.PasswordConfig,
                 SignUpProblems = new()
             }
         };
         return View(model);
     }
 
+
     [HttpPost]
-    public IActionResult SignUp(SignUpViewModel signUpViewModel)
+    public async Task<IActionResult> SignUp(SignUpViewModel signUpViewModel)
     {
         if (signUpViewModel is null)
         {
             return NotFound();
         }
-        // if (model.Email is null || !Email.IsValid(model.Email))
-        // {
-        //     model.Validation.SignUpProblems.Email = true;
-        // }
-        // if (model.Password is not null)
-        // {
-        //     // model.Validation.SignUpProblems.Password = Password.CheckPassword(model.Password, _passwordConfig).ToString();
-        // }
 
-        // if (model.Password != model.ConfirmPassword)
-        // {
-        //     model.Validation.SignUpProblems.ConfirmPassword = true;
-        // }
+        SignUpMethods.Validate(signUpViewModel);
 
-        User user = (User) signUpViewModel;
-
+        if (signUpViewModel.Validation.SignUpProblems.HasProblem())
+        {
+            return View(signUpViewModel);
+        }
 
         using (var connection = new SqlConnection(DataBase.ConnectionString))
         {
-            var sql = """
-            insert into Users(Id, FirstName, LastName, Username, Password, Email) 
-            values (@Id, @FirstName, @LastName, @Username, @Password, @Email)
+            User user = (User)signUpViewModel;
+            var insert_sql = """
+            INSERT INTO Users(Id, FirstName, LastName, Username, Password, Email) 
+            VALUES (@Id, @FirstName, @LastName, @Username, @Password, @Email)
             """;
-            connection.Execute(sql, param: user);
+            try
+            {
+                await connection.ExecuteAsync(insert_sql, param: user);
+            }
+            catch (SqlException ex)
+            {
+                throw new System.Exception(ex.Message);
+            }
         }
-        return View("Index");
+
+        SignUpCompletedViewModel model = new()
+        {
+            FirstName = signUpViewModel.FirstName,
+            LastName = signUpViewModel.LastName,
+            UserName = signUpViewModel.UserName,
+        };
+        return View("SignUpCompleted", model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

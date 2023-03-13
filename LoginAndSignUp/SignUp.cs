@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+using System.Text;
 namespace LoginAndSignUp;
 public class Password
 {
@@ -12,7 +14,7 @@ public class Password
         public bool RequiredDigit { get; init; } = false;
         public bool RequiredLowercase { get; init; } = false;
         public bool RequiredUppercase { get; init; } = false;
-        public bool RequiredSymbol { get; init; } = false;
+        public string RequiredSymbols { get; init; } = string.Empty;
 
         public string ToJson()
         {
@@ -28,7 +30,7 @@ public class Password
         Digit = 2,
         Lowercase = 4,
         Uppercase = 8,
-        Symbol = 16
+        Symbol = 16,
     }
 
     public static Config DefaultConfig { get; } = new();
@@ -87,9 +89,9 @@ public class Password
         {
             config = new Config();
         }
-        if (config.RequiredSymbol)
+        if (config.RequiredSymbols != string.Empty)
         {
-            return password.Any(c => SYMBOLS.Contains(c));
+            return password.Any(c => config.RequiredSymbols.Contains(c));
         }
         return true;
     }
@@ -132,9 +134,15 @@ public class Password
 
     }
 
-    public static string HashPassword(string password)
+
+
+    public static string HashPassword(string text)
     {
-        return BCrypt.Net.BCrypt.HashPassword(password);
+        using (var sha256 = SHA256.Create())
+        {
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(text));
+            return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+        }
     }
 }
 
@@ -161,4 +169,6 @@ public class Email
 
     }
 }
+
+
 

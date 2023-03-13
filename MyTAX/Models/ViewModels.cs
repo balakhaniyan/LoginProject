@@ -1,7 +1,5 @@
-global using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.ComponentModel.DataAnnotations;
-using LoginAndSignUp;
 
 public record class SignUpViewModel
 {
@@ -35,7 +33,7 @@ public record class SignUpViewModel
     }
 }
 
-public class Validation
+public record class Validation
 {
     public Password.Config PasswordConfig { get; init; } = new();
 
@@ -47,11 +45,44 @@ public class Validation
         public bool LastName { get; set; } = false;
         public bool Email { get; set; } = false;
         public bool UserName { get; set; } = false;
-        public LoginAndSignUp.Password.PasswordProblem Password { get; set; } = LoginAndSignUp.Password.PasswordProblem.None;
+        public string Password { get; set; } = LoginAndSignUp.Password.PasswordProblem.None.ToString();
         public bool ConfirmPassword { get; set; } = false;
+        public bool DuplicateEmail { get; set; } = false;
+        public bool DuplicateUserName { get; set; } = false;
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
+        public bool HasProblem()
+        {
+            var properties = this.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(this);
+                if ((value.GetType() == typeof(string) && value.ToString() != LoginAndSignUp.Password.PasswordProblem.None.ToString()) || (value.GetType() == typeof(bool) && (bool)value))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
+}
+
+public record class LoginViewModel
+{
+    [Required]
+    public string UserName { get; set; }
+
+    [Required]
+    public string Password { get; set; }
+
+    public bool IsNotUser { get; set; } = false;
+}
+
+public record SignUpCompletedViewModel
+{
+    public string? UserName { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
 }
