@@ -9,4 +9,5 @@ public class MyTaxDataBase : DbContext
         }
     }
     public DbSet<User>? Users { get; set; }
+    public DbSet<Login>? Logins { get; set; }
 }

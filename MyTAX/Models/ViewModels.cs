@@ -86,3 +86,10 @@ public record SignUpCompletedViewModel
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
 }
+
+public record UserViewModel
+{
+    public string? FirstName { get; set; } = string.Empty;
+    public string? LastName { get; set; } = string.Empty;
+
+}

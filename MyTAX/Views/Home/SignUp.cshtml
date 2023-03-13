@@ -132,14 +132,14 @@
         });
 
 
-        $(".ltr-input").on("input", function (event) {
+        $(".ltr-input").on("keydown", function (event) {
             if ((/^[\u0600-\u06FF]$/.test(event.key))) {
                 event.preventDefault();
                 alert("لطفا از حروف انگلیسی استفاده کنید.");
             }
         });
 
-        $(".rtl-input").on("input", function (event) {
+        $(".rtl-input").on("keydown", function (event) {
             if (/^[a-zA-Z]$/.test(event.key)) {
                 event.preventDefault();
                 alert("لطفا از حروف فارسی استفاده کنید.");
