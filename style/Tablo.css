@@ -1,0 +1,74 @@
+.table-container {
+  width: 80%;
+  margin: 0 auto; }
+  .table-container .tablo {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%; }
+    .table-container .tablo thead, .table-container .tablo tfoot {
+      background-color: #3e3ed2; }
+      .table-container .tablo thead td, .table-container .tablo tfoot td {
+        height: 36px;
+        color: white;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #3e3ed2; }
+        .table-container .tablo thead td span.order, .table-container .tablo tfoot td span.order {
+          position: relative;
+          left: 43%;
+          color: greenyellow; }
+          .table-container .tablo thead td span.order.desc, .table-container .tablo tfoot td span.order.desc {
+            color: orangered; }
+    .table-container .tablo tbody tr td.row {
+      background-color: #7676c4 !important;
+      color: white !important; }
+    .table-container .tablo tbody tr.data {
+      border-style: dashed;
+      height: 36px;
+      border-width: 1px; }
+    .table-container .tablo tbody tr.none-display {
+      display: none; }
+    .table-container .tablo tbody tr.space {
+      height: 12px;
+      background-color: transparent; }
+    .table-container .tablo tbody tr.odd {
+      background-color: white; }
+      .table-container .tablo tbody tr.odd:hover {
+        background-color: yellow; }
+    .table-container .tablo tbody tr.even {
+      background-color: blanchedalmond; }
+      .table-container .tablo tbody tr.even:hover {
+        background-color: yellow; }
+  .table-container .page-menu {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    background-color: white;
+    top: 24px;
+    border: 1px dashed #3e3ed2; }
+    .table-container .page-menu.none-display {
+      display: none; }
+    .table-container .page-menu .main {
+      height: 100%;
+      width: 50%;
+      margin: 0 auto;
+      height: 100%; }
+      .table-container .page-menu .main .page-index {
+        text-align: center;
+        width: 14.2857142857%; }
+        .table-container .page-menu .main .page-index:hover {
+          border: 1px solid rgba(1, 1, 1, 0.1);
+          border-radius: 9px;
+          text-align: center;
+          height: 100%;
+          box-shadow: inset 27px -27px 22px 0px rgba(0, 0, 0, 0.13); }
+        .table-container .page-menu .main .page-index.selected-page-index {
+          background-color: cornflowerblue;
+          text-align: center;
+          border-radius: 9px;
+          box-shadow: inset 27px -27px 22px 0px rgba(0, 0, 0, 0.13);
+          color: white; }
+        .table-container .page-menu .main .page-index.none-display {
+          display: none; }
+
+/*# sourceMappingURL=Style.css.map */

@@ -1,0 +1,97 @@
+.date-input-holder {
+    outline: none;
+    color: blue;
+    width: 100%;
+    height: 50px;
+    overflow: visible;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative; }
+.date-input-holder:focus {
+    outline: none; }
+.date-input-holder .date-input {
+    width: 100%;
+    color: blue;
+    outline: none;
+    border-color: blue;
+    border-style: solid;
+    border-radius: 100px;
+    border-width: 1px;
+    text-align: center; }
+.date-input-holder .date-input::selection {
+    background-color: transparent; }
+.date-input-holder .calendar {
+    width: 100%;
+    height: 250px;
+    visibility: hidden;
+    position: absolute;
+    z-index: 10;
+    background-color: white;
+    border-color: aqua;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 20px; }
+.date-input-holder .calendar div {
+    border-bottom-color: aqua;
+    border-bottom-style: solid;
+    border-bottom-width: 1px; }
+.date-input-holder .calendar div.header {
+    width: 100%;
+    height: 20%; }
+.date-input-holder .calendar div.header span {
+    display: inline-block;
+    margin: 0;
+    height: 100%;
+    border: none;
+    padding: 0;
+    box-sizing: border-box;
+    padding-top: 2% !important; }
+.date-input-holder .calendar div.header span.change {
+    width: 20%;
+    text-align: center; }
+.date-input-holder .calendar div.header span.select-holder {
+    width: 49%; }
+.date-input-holder .calendar div.header span.select-holder select {
+    width: 50%;
+    text-align: center; }
+.date-input-holder .calendar div.header span.select-holder select option {
+    text-align: center; }
+.date-input-holder .calendar div.body {
+    height: 65%; }
+.date-input-holder .calendar div.body table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse; }
+.date-input-holder .calendar div.body table thead td {
+    border-collapse: collapse;
+    box-sizing: border-box;
+    border: none;
+    text-align: center; }
+.date-input-holder .calendar div.body table tr td {
+    position: relative;
+    border: none !important;
+    font-size: 18px;
+    text-align: center; }
+.date-input-holder .calendar div.body table tr td:hover {
+    background-color: azure; }
+.date-input-holder .calendar div.body table tr td.today {
+    background-color: aquamarine !important; }
+.date-input-holder .calendar div.body table tr td.selected-day {
+    background-color: yellow !important; }
+.date-input-holder .calendar div.body table tr td.weekend {
+    color: red; }
+.date-input-holder .calendar div.body table tr td .gregorian {
+    position: absolute;
+    color: #d516e1;
+    font-size: 15px;
+    bottom: -10%;
+    right: 10%; }
+.date-input-holder .calendar div.footer {
+    height: 15%;
+    border-bottom: none;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: aquamarine;
+    text-align: center; }
+
+/*# sourceMappingURL=style.css.map */
