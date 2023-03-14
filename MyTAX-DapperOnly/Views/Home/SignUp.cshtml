@@ -1,0 +1,207 @@
+﻿@using LoginAndSignUp
+@model SignUpViewModel
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-controller="Home" asp-action="SignUp">
+    <div class="input-holder invalid-input initial">
+        <input asp-for="FirstName" id="first_name" class="rtl-input">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>نام</label>
+    </div>
+    <div class="input-holder invalid-input initial">
+        <input asp-for="LastName" id="last_name" class="rtl-input">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>نام خانوادگی</label>
+    </div>
+    <div class="input-holder invalid-input initial">
+        <input asp-for="UserName" id="user_name" class="ltr-input">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>نام کاربری</label>
+    </div>
+    <div class="input-holder invalid-input initial">
+        <input asp-for="Email" id="email" class="ltr-input">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>رایانامه</label>
+    </div>
+    <div class="input-holder invalid-input initial">
+        <input asp-for="Password" id="password" class="ltr-input" type="password">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>رمز عبور</label>
+    </div>
+    <div class="input-holder invalid-input initial">
+        <input asp-for="ConfirmPassword" id="confirm_password" class="ltr-input" type="password">
+        <span class="problem-part" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </span>
+        <label>تکرار رمز عبور</label>
+    </div>
+    <div class="form-buttons-holder">
+        <input class="submit-input" type="submit" value="ثبت" disabled><input type="reset" value="پاک کردن">
+    </div>
+</form>
+
+@section Scripts
+    {
+    <script>
+        let email_regex = /@Html.Raw(Email.EMAIL_REGEX_STRING)/;
+        let password_config = JSON.parse(@Html.Raw(Json.Serialize(@Model.Validation.PasswordConfig.ToJson())));
+        let signup_problems = JSON.parse(@Html.Raw(Json.Serialize(@Model.Validation.SignUpProblems.ToJson())));
+        let password_problem_logs = {
+            "user_name": "نام کاربری نمی‌تواند خالی باشد",
+            "first_name": "نام نمی‌تواند خالی باشد",
+            "last_name": "نام خانوادگی نمی‌تواند خالی باشد",
+            "email": "یک رایانامه معتبر وارد کنید",
+            "duplicate_email": "رایانامه تکراری است",
+            "duplicate_user_name": "نام کاربری تکراری است",
+            "password": {
+                "length": "رمز عبور باید حداقل " + password_config.MinLength + " کاراکتر باشد",
+                "lowercase": "رمز عبور باید حداقل یک حرف کوچک داشته باشد",
+                "uppercase": "رمز عبور باید حداقل یک حرف بزرگ داشته باشد",
+                "digit": "رمز عبور باید حداقل یک عدد داشته باشد",
+                "symbol": "رمز عبور باید حداقل یک کاراکتر خاص داشته باشد"
+            },
+            "confirm_password": "رمز عبور و تکرار رمز عبور باید یکسان باشند"
+        }
+
+        $(function () {
+
+            for (let problem in signup_problems) {
+
+                if (problem.startsWith("Duplicate") && signup_problems[problem]) {
+                    let snake_case_problem = uppercase_to_snakecase(problem);
+                    set_duplicate(snake_case_problem);
+                }
+                else if (typeof (signup_problems[problem]) === "boolean" && signup_problems[problem]) {
+                    set_invalid(problem)
+                }
+                else if (typeof (signup_problems[problem]) === "string" && signup_problems[problem] !== "None") { // this is password
+                    set_invalid(problem);
+                    let problems_string = signup_problems[problem].split(", ").map(x => password_problem_logs["password"][uppercase_to_snakecase(x)]).join("\n");
+                    problem_snake = uppercase_to_snakecase(problem);
+                    $(`#${problem_snake}`).parent(".input-holder").find(".problem-part").attr("title", problems_string);
+                }
+            }
+        });
+
+        $("#email").on("input", function () {
+            let email = $(this).val();
+            toggle_valid_invalid(this, email_regex.test(email));
+        });
+
+        $("#password").on("input", function () {
+            let password = $(this).val();
+            let confirm_password = $("#confirm_password").val();
+            let password_problems = Password.checkPassword(password, password_config);
+            let password_problems_string = Object.keys(password_problems).map(problem => password_problem_logs["password"][problem]).join("\n");
+            toggle_valid_invalid(this, Object.values(password_problems).length == 0)
+            toggle_valid_invalid($("#confirm_password"), password == confirm_password);
+            $(this).parent(".input-holder").find(".problem-part").attr("title", password_problems_string);
+        });
+
+        $("#confirm_password").on("input", function () {
+            let password = $("#password").val();
+            let confirm_password = $(this).val();
+            toggle_valid_invalid(this, password == confirm_password)
+        });
+
+        $("#first_name, #last_name, #user_name").on("input", function () {
+            let first_name = $(this).val();
+            toggle_valid_invalid(this, first_name.length > 0)
+        });
+
+        $("#first_name, #last_name, #user_name, #email, #password, #confirm_password").on("focus", function () {
+            $(this).parent(".input-holder").removeClass("initial");
+            $(this).parent(".input-holder").find(".problem-part").attr("title",
+                $(this).attr("id") == "password" ? Object.values(password_problem_logs[$(this).attr("id")]).join("\n") : password_problem_logs[$(this).attr("id")]);
+        }).on("input", function (e) {
+            if (!$(document).find(".invalid-input").length) { $(".submit-input").removeAttr("disabled"); }
+            else { $(".submit-input").attr("disabled", "disabled"); }
+        });
+
+
+        $(".ltr-input").on("keydown", function (event) {
+            if ((/^[\u0600-\u06FF]$/.test(event.key))) {
+                event.preventDefault();
+                alert("لطفا از حروف انگلیسی استفاده کنید.");
+            }
+        });
+
+        $(".rtl-input").on("keydown", function (event) {
+            if (/^[a-zA-Z]$/.test(event.key)) {
+                event.preventDefault();
+                alert("لطفا از حروف فارسی استفاده کنید.");
+            }
+        });
+
+        $("#user_name, #email").on("input", function () {
+            let id = $(this).attr("id");
+            let uppercase_id = snakecase_to_uppercase(id)
+            let first_lower_id = uppercase_id.charAt(0).toLowerCase() + uppercase_id.slice(1);
+            $.ajax({
+                type: "POST",
+                url: `/api/SignUpAPI/Is${uppercase_id}Duplicate?${first_lower_id}=${$(this).val()}`,
+                contentType: "application/json",
+                success: function (response) {
+                    if (response) {
+                        set_duplicate(`duplicate_${id}`);
+                    }
+                },
+            });
+        });
+
+        function toggle_valid_invalid(elem, boolean_expression) {
+            if (boolean_expression) {
+                $(elem).parent(".input-holder").removeClass("invalid-input");
+                $(elem).parent(".input-holder").addClass("valid-input");
+            }
+            else {
+                $(elem).parent(".input-holder").removeClass("valid-input");
+                $(elem).parent(".input-holder").addClass("invalid-input");
+                $(elem).parent(".input-holder").find(".problem-part").attr("title", password_problem_logs[$(elem).attr("id")]);
+            }
+        }
+
+        function uppercase_to_snakecase(string) {
+            return string.match(/[A-Z][a-z0-9]+/g).map(x => x.toLowerCase()).join("_")
+        }
+
+        function snakecase_to_uppercase(string) {
+            return string.split("_").map(x => x[0].toUpperCase() + x.slice(1)).join("")
+        }
+
+        function set_invalid(problem) {
+            problem = uppercase_to_snakecase(problem);
+            toggle_valid_invalid($(`#${problem}`), false);
+            $(`#${problem}`).parent(".input-holder").removeClass("initial");
+            if ($(`#${problem}`).hasClass("ltr-input")) {
+                $(`#${problem}`).parent(".input-holder").find("label").css({
+                    'font-size': "0.5rem",
+                    "top": "-1rem"
+                })
+            }
+        }
+
+        function set_duplicate(problem) {
+            let elem_name = problem.substr(10)
+            toggle_valid_invalid($(`#${elem_name}`), false);
+            $(`#${elem_name}`).parent(".input-holder").removeClass("initial");
+            $(`#${elem_name}`)
+                .parent(".input-holder")
+                .find(".problem-part").attr("title", password_problem_logs[problem]);
+        }
+
+    </script>
+}

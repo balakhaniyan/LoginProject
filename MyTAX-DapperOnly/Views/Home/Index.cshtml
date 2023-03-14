@@ -1,0 +1,46 @@
+﻿@model UserViewModel?
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                @if (Model is null)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignUp">ثبت
+                            نام</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">ورود</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">خروج</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="text-center">
+    <h1 class="display-4">خوش آمدید</h1>
+    @if (Model is null)
+    {
+        <p>
+            شما امکان دسترسی به این صفحه را ندارید، ابتدا
+            <a asp-controller="Home" asp-action="Login">وارد شوید</a>
+            و یا
+            <a asp-controller="Home" asp-action="SignUp">ثبت نام </a>نمایید.
+        </p>
+    }
+    else
+    {
+        <span>سلام @Model.FirstName @Model.LastName</span>
+    }
+</div>

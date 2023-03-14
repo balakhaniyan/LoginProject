@@ -1,0 +1,160 @@
+@font-face {
+  font-family: vazirmatn;
+  src: url(../fonts/vazir/Vazirmatn-Regular.ttf);
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  font-family: vazirmatn;
+  direction: rtl;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.input-holder {
+  width: 33%;
+  height: 3.5rem;
+  background-color: #edecec;
+  border-radius: 0.8rem;
+  position: relative;
+  margin: 0 auto 1rem;
+}
+
+.input-holder input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 1rem;
+  padding: 0 1rem;
+}
+
+.input-holder label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 3.5rem;
+  font-size: 0.7rem;
+  padding: 0 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.form-buttons-holder {
+  width: 33%;
+  height: 3.5rem;
+  background-color: transparent;
+  border-radius: 0.8rem;
+  margin: 0 auto 1rem;
+}
+
+.form-buttons-holder input {
+  width: 49%;
+  height: 100%;
+  border: none;
+  border-radius: 0.8rem;
+  outline: none;
+  font-size: 1rem;
+  padding: 0;
+  cursor: pointer;
+  box-sizing: content-box;
+  margin: 0;
+}
+
+.form-buttons-holder input:hover {
+  opacity: 0.8;
+  color: white;
+}
+
+.form-buttons-holder input[type="submit"] {
+  background-color: lightgreen;
+  margin-left: 2%;
+}
+
+.form-buttons-holder input[type="reset"] {
+  background-color: lightsalmon;
+}
+
+.ltr-input {
+  direction: ltr;
+}
+
+.input-holder.valid-input {
+  background-color: #edecec;
+}
+
+.input-holder.invalid-input {
+  background-color: rgb(246, 184, 160);
+}
+
+.input-holder.invalid-input.initial {
+  background-color: #edecec;
+}
+
+input:disabled,
+input[disabled] {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+.input-holder .problem-part {
+  color: red;
+  display: none;
+  position: absolute;
+  top: 1.1rem;
+  left: 5%;
+}
+
+.input-holder .ltr-input+.problem-part {
+  left: 90%;
+}
+
+.input-holder .problem-part.visible+label {
+  top: -1rem !important;
+  font-size: 0.5rem !important;
+}
+
+.input-holder.invalid-input:not(.initial) .problem-part {
+  display: inline-block !important;
+  animation-iteration-count: infinite;
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0px, -5px);
+  }
+}
